@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Spotify Lyrics</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+    h1 {
+        text-align: center;
+        margin-top: 50px;
+        color: #333;
+    }
+    #currentTrack, #lyrics {
+        max-width: 650px;
+        margin: 0 auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        font-size: 18px;
+    }
+</style>
+<body>
+    <h1>Currently Playing:</h1>
+    <div id="currentTrack"></div>
+    <h1>Lyrics:</h1>
+    <div id="lyrics"></div>
+
+    <script>
+        // Function to handle Spotify authorization
+        function authorizeSpotify(clientId) {
+            const redirectUri = 'http://localhost:3000/index.html';
+            const scope = 'user-read-currently-playing';
+            const authorizationUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+            window.location.href = authorizationUrl;
+        }
+    
+        // Function to extract access token from URL
+        function getAccessTokenFromUrl() {
+            const urlParams = new URLSearchParams(window.location.hash.substr(1));
+            return urlParams.get('access_token');
+        }
+    
+        // Function to fetch currently playing track
+        function fetchCurrentlyPlaying(clientId, apiKey) {
+            const accessToken = getAccessTokenFromUrl();
+            if (!accessToken) {
+                // Redirect user for authorization if access token not found
+                authorizeSpotify(clientId);
+                return;
+            }
+    
+            fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const currentTrackElement = document.getElementById('currentTrack');
+                if (data.item) {
+                    const trackName = data.item.name;
+                    const artistName = data.item.artists.map(artist => artist.name).join(', ');
+                    currentTrackElement.textContent = `${artistName} - ${trackName}`;
+    
+                    jQuery.getJSON(
+                        "https://api.vagalume.com.br/search.php"
+                            + "?art=" + artistName
+                            + "&mus=" + trackName
+                            + "&apikey=" + apiKey,
+                        function (data) {
+                            const lyricsElement = document.getElementById('lyrics');
+                            lyricsElement.innerHTML = data.mus[0].text.replace(/\n/g, '<br>');
+                        });
+                } else {
+                    currentTrackElement.textContent = 'Nothing is currently playing.';
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the currently playing track:', error);
+            });
+        }
+    
+        // Fetch config.json and then call the function
+        fetch('./config.json')
+        .then(response => response.json())
+        .then(config => {
+            const clientId = config.clientId; //add clientId of Spotify
+            const apiKey = config.apiKey; //add apiKey of Vagalume
+    
+            // Call fetchCurrentlyPlaying with the obtained clientId and apiKey
+            fetchCurrentlyPlaying(clientId, apiKey);
+        })
+        .catch(error => console.error('Error loading config.json:', error));
+    </script>
+    
+</body>
+</html>
