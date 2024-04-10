@@ -1,2 +1,4 @@
 # .gitignore
 config.json
+node_modules
+Spotify-Lyrics-win32-x64

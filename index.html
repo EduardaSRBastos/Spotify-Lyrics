@@ -35,7 +35,6 @@
     <div id="lyrics"></div>
 
     <script>
-        // Function to handle Spotify authorization
         function authorizeSpotify(clientId) {
             const redirectUri = 'http://localhost:3000/index.html';
             const scope = 'user-read-currently-playing';
@@ -43,17 +42,14 @@
             window.location.href = authorizationUrl;
         }
     
-        // Function to extract access token from URL
         function getAccessTokenFromUrl() {
             const urlParams = new URLSearchParams(window.location.hash.substr(1));
             return urlParams.get('access_token');
         }
     
-        // Function to fetch currently playing track
         function fetchCurrentlyPlaying(clientId, apiKey) {
             const accessToken = getAccessTokenFromUrl();
             if (!accessToken) {
-                // Redirect user for authorization if access token not found
                 authorizeSpotify(clientId);
                 return;
             }
@@ -94,14 +90,12 @@
             });
         }
     
-        // Fetch config.json and then call the function
         fetch('./config.json')
         .then(response => response.json())
         .then(config => {
             const clientId = config.clientId; //add clientId of Spotify
             const apiKey = config.apiKey; //add apiKey of Vagalume
     
-            // Call fetchCurrentlyPlaying with the obtained clientId and apiKey
             fetchCurrentlyPlaying(clientId, apiKey);
         })
         .catch(error => console.error('Error loading config.json:', error));
