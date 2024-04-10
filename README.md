@@ -2,8 +2,23 @@
 
 This simple web application displays the currently playing track from Spotify and fetches its lyrics using the Vagalume API.
 
+</br>
+
+## Table of Contents
+
+- [Usage](#usage)
+  - [Credentials](#credentials)
+  - [Web Version](#web-version)
+  - [Electron Version](#electron-version)
+- [How it Works](#how-it-works)
+- [Dependencies](#dependencies)
+- [License](#license)
+
+</br>
+
 ## Usage
 
+#### Credentials
 1. Get your Spotify Client ID and Secret from [Spotify Developer](https://developer.spotify.com/dashboard/).
    1. Click in 'Create App' and add a 'Name' and 'Description'.
    2. Add http://localhost:8080/index.html in 'Redirect URIs'.
@@ -25,10 +40,12 @@ This simple web application displays the currently playing track from Spotify an
 
     Replace `YOUR_SPOTIFY_CLIENT_ID` with your Spotify client ID and `YOUR_VAGALUME_API_KEY` with your Vagalume API Key.
 
-5.  **Web Version**:
+</br>
+
+#### Web Version:
    - Run and open `index.html` in your web browser.
 
-6.  **Electron Version**:
+#### Electron Version:
    - Ensure you have Node.js and npm installed on your machine.
    - Install Electron by running `npm install electron --save-dev`.
    - Run `npm install` to install dependencies.
@@ -39,6 +56,8 @@ This simple web application displays the currently playing track from Spotify an
    - Alternatively, to open the app by clicking on an executable file, run `npx electron-packager . Spotify-Lyrics`.
      1. The packaged application will be available in the `Spotify-Lyrics` directory.
 
+</br>
+
 ## How it Works
 
 - When the page loads, it fetches the currently playing track from Spotify using the Spotify Web API.
@@ -46,12 +65,16 @@ This simple web application displays the currently playing track from Spotify an
 - The lyrics are displayed on the webpage.
 - If the music changes, you will need to reload the page.
 
+</br>
+
 ## Dependencies
 
 - jQuery: Used for making AJAX requests to the Vagalume API.
 - Spotify Web API: Used for fetching the currently playing track from Spotify.
 - Vagalume API: Used for fetching the lyrics of the currently playing track.
 - Electron: Used for creating standalone desktop applications.
+
+</br>
 
 ## License
 
