@@ -31,6 +31,7 @@ This simple web application displays the currently playing track from Spotify an
 - When the page loads, it fetches the currently playing track from Spotify using the Spotify Web API.
 - It then fetches the lyrics of the currently playing track using the Vagalume API.
 - The lyrics are displayed on the webpage.
+- If the music changes, you will need to reload the page.
 
 ## Dependencies
 
