@@ -36,7 +36,7 @@
 
     <script>
         function authorizeSpotify(clientId) {
-            const redirectUri = 'http://localhost:3000/index.html';
+            const redirectUri = 'http://localhost:8080/index.html';
             const scope = 'user-read-currently-playing';
             const authorizationUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
             window.location.href = authorizationUrl;
