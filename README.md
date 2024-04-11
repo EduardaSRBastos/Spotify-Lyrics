@@ -1,15 +1,15 @@
-# Spotify Lyrics
+# Spotify Lyrics <!-- omit in toc -->
 
 This simple web application displays the currently playing track from Spotify and fetches its lyrics using the Vagalume API.
 
 </br>
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
 - [Usage](#usage)
-  - [Credentials](#credentials)
-  - [Web Version](#web-version)
-  - [Electron Version](#electron-version)
+    - [Credentials](#credentials)
+    - [Web Version:](#web-version)
+    - [Electron Version:](#electron-version)
 - [How it Works](#how-it-works)
 - [Dependencies](#dependencies)
 - [License](#license)
@@ -49,12 +49,10 @@ This simple web application displays the currently playing track from Spotify an
    - Ensure you have Node.js and npm installed on your machine.
    - Install Electron by running `npm install electron --save-dev`.
    - Run `npm install` to install dependencies.
-   - To use the application with a local server:
-     1. Install a simple HTTP server globally by running `npm install -g http-server`.
-     2. Navigate to the project directory and run `http-server`.
-   - Run `npm start` in other terminal in the project directory to start the application.
+   - Install a simple HTTP server globally by running `npm install -g http-server`.
+   - Run `npm start` in the project directory to start the application.
    - Alternatively, to open the app by clicking on an executable file, run `npx electron-packager . Spotify-Lyrics`.
-     1. The packaged application will be available in the `Spotify-Lyrics` directory.
+     - The packaged application will be available in the `Spotify-Lyrics` directory.
 
 </br>
 

@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require('electron');
+const path = require('path');
+const fs = require('fs');
 
 let mainWindow;
 
@@ -18,6 +20,25 @@ function createWindow() {
     });
 
     mainWindow.loadFile('index.html');
+
+    const http = require('http');
+
+    const server = http.createServer((req, res) => {
+        const filePath = path.join(__dirname, req.url);
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                res.writeHead(404);
+                res.end(JSON.stringify(err));
+                return;
+            }
+            res.writeHead(200);
+            res.end(data);
+        });
+    });
+
+    server.listen(8080, () => {
+        console.log('HTTP server running on port 8080.');
+    });
 }
 
 app.on('ready', createWindow);
