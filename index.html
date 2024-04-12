@@ -31,8 +31,10 @@
 <body>
     <h1>Currently Playing:</h1>
     <div id="currentTrack"></div>
-    <h1>Lyrics:</h1>
-    <div id="lyrics"></div>
+    <div id="lyricsContainer">
+        <h1>Lyrics:</h1>
+        <div id="lyrics"></div>
+    </div>
 
     <script>
         function authorizeSpotify(clientId) {
@@ -48,6 +50,7 @@
         }
     
         function fetchCurrentlyPlaying(clientId, apiKey) {
+            const currentTrackElement = document.getElementById('currentTrack');
             const accessToken = getAccessTokenFromUrl();
             if (!accessToken) {
                 authorizeSpotify(clientId);
@@ -61,12 +64,11 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Network response was not ok.');
                 }
                 return response.json();
             })
             .then(data => {
-                const currentTrackElement = document.getElementById('currentTrack');
                 if (data.item) {
                     const trackName = data.item.name;
                     const artistName = data.item.artists.map(artist => artist.name).join(', ');
@@ -79,14 +81,19 @@
                             + "&apikey=" + apiKey,
                         function (data) {
                             const lyricsElement = document.getElementById('lyrics');
-                            lyricsElement.innerHTML = data.mus[0].text.replace(/\n/g, '<br>');
+                            if (data.mus && data.mus.length > 0) {
+                                lyricsElement.innerHTML = data.mus[0].text.replace(/\n/g, '<br>');
+                            } else {
+                                lyricsElement.textContent = 'Lyrics not found.';
+                            }
                         });
-                } else {
-                    currentTrackElement.textContent = 'Nothing is currently playing.';
                 }
             })
             .catch(error => {
                 console.error('There was a problem fetching the currently playing track:', error);
+                currentTrackElement.textContent = 'Nothing is currently playing.';
+                const lyricsContainer = document.getElementById('lyricsContainer');
+                lyricsContainer.style.opacity = 0;
             });
         }
     
